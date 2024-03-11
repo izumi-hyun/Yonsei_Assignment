@@ -4,16 +4,16 @@
 #include <string.h>
 #include <ctype.h>
 
-#define   Tbl_size  37533	// ÃÑ È¸»ç¸í ¼öÀÇ 1.1 ¹è Á¤µµ.
+#define   Tbl_size  37533	// ì´ íšŒì‚¬ëª… ìˆ˜ì˜ 1.1 ë°° ì •ë„.
 
 typedef struct ty_record {
 	char name[300];
-	int monincome;  // ´ÜÀ§: Ãµ¿ø.
+	int monincome;  // ë‹¨ìœ„: ì²œì›.
 	int link;
 } type_record;
 
 type_record Hashtable[Tbl_size];
-int LAST = Tbl_size - 1; // °¡Àå ³ôÀº ºóÀÚ¸®·Î ÃÊ±âÈ­.
+int LAST = Tbl_size - 1; // ê°€ì¥ ë†’ì€ ë¹ˆìë¦¬ë¡œ ì´ˆê¸°í™”.
 int max_num_probe;
 FILE* fp;
 
@@ -21,7 +21,7 @@ int hash(char recname[]) {
 	unsigned char u; int HA, j, leng, halfleng;
 	long sum = 0;
 	int A[300];
-	// name ÀÇ ±ÛÀÚ j ¿¡ ´ëÇÏ¿© ´ÙÀ½À» ¼öÇàÇÑ´Ù:
+	// name ì˜ ê¸€ì j ì— ëŒ€í•˜ì—¬ ë‹¤ìŒì„ ìˆ˜í–‰í•œë‹¤:
 	leng = strlen(recname);
 	for (j = 0; j < leng; j++) {
 		u = recname[j];
@@ -36,27 +36,27 @@ int hash(char recname[]) {
 	return HA;
 } // end of hash
 
-// ºóÀÚ¸® Ã£±â. Àü¿ªº¯¼ö LAST ¸¦ ÀÌ¿ëÇÑ´Ù.
-// LAST ÀÌÇÏ¿¡ ºóÀÚ¸®°¡ ÀÖÀ» ¼ö ÀÖ´Ù. Áï LAST º¸´Ù Å« À§Ä¡¿¡´Â ºóÀÚ¸®°¡ ¾ø´Ù.
-// ´ÙÀ½ ÇÔ¼ö´Â LAST ÀÌÇÏ¿¡¼­ ºóÀÚ¸®°¡ ÀÖ´Â °¡Àå ³ôÀº ÁÖ¼Ò¸¦ Ã£¾Æ ÁØ´Ù. (LAST µµ º¯°æ).
+// ë¹ˆìë¦¬ ì°¾ê¸°. ì „ì—­ë³€ìˆ˜ LAST ë¥¼ ì´ìš©í•œë‹¤.
+// LAST ì´í•˜ì— ë¹ˆìë¦¬ê°€ ìˆì„ ìˆ˜ ìˆë‹¤. ì¦‰ LAST ë³´ë‹¤ í° ìœ„ì¹˜ì—ëŠ” ë¹ˆìë¦¬ê°€ ì—†ë‹¤.
+// ë‹¤ìŒ í•¨ìˆ˜ëŠ” LAST ì´í•˜ì—ì„œ ë¹ˆìë¦¬ê°€ ìˆëŠ” ê°€ì¥ ë†’ì€ ì£¼ì†Œë¥¼ ì°¾ì•„ ì¤€ë‹¤. (LAST ë„ ë³€ê²½).
 int find_empty_location() {
 	int curr;
 	curr = LAST;
-	while (Hashtable[curr].name[0] != '\0')  // curr °¡ ºóÀÚ¸®°¡ ¾Æ´Ï¸é ³»¸°´Ù.
+	while (Hashtable[curr].name[0] != '\0')  // curr ê°€ ë¹ˆìë¦¬ê°€ ì•„ë‹ˆë©´ ë‚´ë¦°ë‹¤.
 		curr -= 1;
 	return curr;
 } // end of find_empty_location.
 
-// return value: ³Ö´Â µ¿¾ÈÀÇ ·¹ÄÚµåµéÀ» Á¶»çÇØ º» ¼ö. (-1 ÀÌ¸é ÀÔ·Â ½ÇÆĞ).
+// return value: ë„£ëŠ” ë™ì•ˆì˜ ë ˆì½”ë“œë“¤ì„ ì¡°ì‚¬í•´ ë³¸ ìˆ˜. (-1 ì´ë©´ ì…ë ¥ ì‹¤íŒ¨).
 int insert_rec(type_record rec) {
 	int HA, curr, nprove = 0, empty_loc;
 	HA = hash(rec.name);
 
-	if (Hashtable[HA].name[0] == '\0') { // È¨ÁÖ¼Ò°¡ ºñ¾î ÀÖÀ½. ¿©±â¿¡ ³Ö°í Á¾·á.
-		Hashtable[HA] = rec; // HA À§Ä¡ÀÇ link ´Â ÀÌ¹Ì -1 ÀÓ.
-		return 1; // probe ¼ö´Â 1.
+	if (Hashtable[HA].name[0] == '\0') { // í™ˆì£¼ì†Œê°€ ë¹„ì–´ ìˆìŒ. ì—¬ê¸°ì— ë„£ê³  ì¢…ë£Œ.
+		Hashtable[HA] = rec; // HA ìœ„ì¹˜ì˜ link ëŠ” ì´ë¯¸ -1 ì„.
+		return 1; // probe ìˆ˜ëŠ” 1.
 	}
-	else { // È¨ ÁÖ¼Ò¿¡ ÀÌ¹Ì ·¹ÄÚµå°¡ µé¾î ÀÖÀ½.
+	else { // í™ˆ ì£¼ì†Œì— ì´ë¯¸ ë ˆì½”ë“œê°€ ë“¤ì–´ ìˆìŒ.
 		curr = HA;
 
 		while (Hashtable[curr].link != -1) {
@@ -72,8 +72,8 @@ int insert_rec(type_record rec) {
 }
 
 
-// ¹İÈ¯°ª: -1 ÀÌ¸é Ã£±â ½ÇÆĞ, ¾Æ´Ï¸é Ã£Àº À§Ä¡.
-// probe: Ã£´Âµ¥ »ç¿ëÇÑ ·¹ÄÚµå ÇÁ·Îºê ¼ö.
+// ë°˜í™˜ê°’: -1 ì´ë©´ ì°¾ê¸° ì‹¤íŒ¨, ì•„ë‹ˆë©´ ì°¾ì€ ìœ„ì¹˜.
+// probe: ì°¾ëŠ”ë° ì‚¬ìš©í•œ ë ˆì½”ë“œ í”„ë¡œë¸Œ ìˆ˜.
 int retrieve_rec(char* key, int* probe) {
 	int curr, HA;
 	HA = hash(key);
@@ -81,25 +81,25 @@ int retrieve_rec(char* key, int* probe) {
 
 	if (Hashtable[HA].name[0] == '\0') {
 		*probe = 0;
-		return -1; // È¨ ÁÖ¼Ò°¡ ºñ¾î ÀÖÀ¸¸é ÇØ´ç ·¹ÄÚµå°¡ Á¸ÀçÇÏÁö ¾ÊÀ½.
+		return -1; // í™ˆ ì£¼ì†Œê°€ ë¹„ì–´ ìˆìœ¼ë©´ í•´ë‹¹ ë ˆì½”ë“œê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŒ.
 	}
 
 	*probe = 0;
 	while (curr != -1) {
 		(*probe)++;
 		if (strcmp(Hashtable[curr].name, key) == 0) {
-			return curr; // ÀÏÄ¡ÇÏ´Â ·¹ÄÚµå¸¦ Ã£¾ÒÀ» ¶§ À§Ä¡¸¦ ¹İÈ¯.
+			return curr; // ì¼ì¹˜í•˜ëŠ” ë ˆì½”ë“œë¥¼ ì°¾ì•˜ì„ ë•Œ ìœ„ì¹˜ë¥¼ ë°˜í™˜.
 		}
 		curr = Hashtable[curr].link;
 	}
 
-	return -1; // ÀÏÄ¡ÇÏ´Â ·¹ÄÚµå¸¦ Ã£Áö ¸øÇßÀ» ¶§ -1 ¹İÈ¯.
+	return -1; // ì¼ì¹˜í•˜ëŠ” ë ˆì½”ë“œë¥¼ ì°¾ì§€ ëª»í–ˆì„ ë•Œ -1 ë°˜í™˜.
 }
 
 
 
-// return value : ÆÄÀÏ Áß Å½»öÀÇ ÃÖ´ë ÇÁ·Îºê ¼ö
-// file_name : ÆÄÀÏ ÀÌ¸§
+// return value : íŒŒì¼ ì¤‘ íƒìƒ‰ì˜ ìµœëŒ€ í”„ë¡œë¸Œ ìˆ˜
+// file_name : íŒŒì¼ ì´ë¦„
 unsigned int count_max_probe(const char* file_name) {
 	char line[300], * res;
 	int nprobe, loc, leng, n_search_done = 0, total_probes = 0;
@@ -108,7 +108,7 @@ unsigned int count_max_probe(const char* file_name) {
 	fp = fopen(file_name, "r");
 	while (1)
 	{
-		/* ÆÄÀÏ ³»¿¡¼­ ÃÖ´ë ÇÁ·Îºê ¼ö¸¦ Ã£´Â ¾Ë°í¸®Áò */
+		/* íŒŒì¼ ë‚´ì—ì„œ ìµœëŒ€ í”„ë¡œë¸Œ ìˆ˜ë¥¼ ì°¾ëŠ” ì•Œê³ ë¦¬ì¦˜ */
 		/****************
 		to
 		be
@@ -136,15 +136,15 @@ unsigned int count_max_probe(const char* file_name) {
 
 // return value: number of relocations of records.
 int del_start(int s, int* chain_split)
-// chain_split: Ã¼ÀÎºĞ¸® È¸¼ö¸¦ Ç¥½ÃÇÒ º¯¼ö¿¡ ´ëÇÑ ÁÖ¼Ò.
+// chain_split: ì²´ì¸ë¶„ë¦¬ íšŒìˆ˜ë¥¼ í‘œì‹œí•  ë³€ìˆ˜ì— ëŒ€í•œ ì£¼ì†Œ.
 {
    int curr, prev, nmove = 0, found = -1, prev_found = -1;
    
-   // s ´ÙÀ½ À§Ä¡ºÎÅÍ Ã¼ÀÎ ³»¿¡¼­ È¨ ÁÖ¼Ò°¡ s ÀÎ ¸Ç ³ªÁßÀÇ ·¹ÄÚµå¸¦ Ã£´Â´Ù.
+   // s ë‹¤ìŒ ìœ„ì¹˜ë¶€í„° ì²´ì¸ ë‚´ì—ì„œ í™ˆ ì£¼ì†Œê°€ s ì¸ ë§¨ ë‚˜ì¤‘ì˜ ë ˆì½”ë“œë¥¼ ì°¾ëŠ”ë‹¤.
    curr = Hashtable[s].link;
    prev = s;
 
-   /* Hashtable¿¡¼­ key¿Í µ¿ÀÏÇÑ nameÀ» Ã£±â */
+   /* Hashtableì—ì„œ keyì™€ ë™ì¼í•œ nameì„ ì°¾ê¸° */
    while (curr != -1)
    {
 	   if (hash(Hashtable[curr].name) == s) {
@@ -174,43 +174,43 @@ int del_start(int s, int* chain_split)
 } // end of del_start
 
 // return value: number of relocations of records.
-// chain_split: Ã¼ÀÎºĞ¸® ¿©ºÎ¸¦ Ç¥½ÃÇÒ º¯¼ö¿¡ ´ëÇÑ ÁÖ¼Ò.
+// chain_split: ì²´ì¸ë¶„ë¦¬ ì—¬ë¶€ë¥¼ í‘œì‹œí•  ë³€ìˆ˜ì— ëŒ€í•œ ì£¼ì†Œ.
 int del_middle(int s, int p, int* chain_split)
 {
 	int curr, prev, HA_curr, HA_curr_belongs_to_D_s, element_of_D_s, nmove = 0, found = -1, prev_found = -1;
 
-	// s ´ÙÀ½ À§Ä¡ºÎÅÍ Ã¼ÀÎ ³»¿¡¼­ È¨ ÁÖ¼Ò°¡ s ÀÎ ¸Ç ³ªÁßÀÇ ·¹ÄÚµå¸¦ Ã£´Â´Ù.
+	// s ë‹¤ìŒ ìœ„ì¹˜ë¶€í„° ì²´ì¸ ë‚´ì—ì„œ í™ˆ ì£¼ì†Œê°€ s ì¸ ë§¨ ë‚˜ì¤‘ì˜ ë ˆì½”ë“œë¥¼ ì°¾ëŠ”ë‹¤.
 	curr = Hashtable[s].link;
 	prev = s;
 
 	while (curr != -1)
 	{
 		if (hash(Hashtable[curr].name) == s) {
-			prev_found = prev; // Ã£Àº °÷ÀÇ ¼±Çà ÁÖ¼Òµµ ÀúÀå.
-			found = curr; // Ã£Àº Àå¼Ò ÀúÀå.
+			prev_found = prev; // ì°¾ì€ ê³³ì˜ ì„ í–‰ ì£¼ì†Œë„ ì €ì¥.
+			found = curr; // ì°¾ì€ ì¥ì†Œ ì €ì¥.
 		}
-		// ´ÙÀ½ ÁÖ¼Ò·Î ÀüÁøÇÑ´Ù.
+		// ë‹¤ìŒ ì£¼ì†Œë¡œ ì „ì§„í•œë‹¤.
 		prev = curr;
 		curr = Hashtable[curr].link;
 
 	}
 	
-	if (found == -1) { // Ã£±â ½ÇÆĞ. À§Ä¡ s ¸¦ Ã¼ÀÎ¿¡¼­ skip ÇÏ°í, s ÀÇ ·¹ÄÚµå¸¦ Á¦°ÅÇÑ´Ù.
+	if (found == -1) { // ì°¾ê¸° ì‹¤íŒ¨. ìœ„ì¹˜ s ë¥¼ ì²´ì¸ì—ì„œ skip í•˜ê³ , s ì˜ ë ˆì½”ë“œë¥¼ ì œê±°í•œë‹¤.
 		Hashtable[p].link = Hashtable[s].link;  // skip s.
-		Hashtable[s].name[0] = '\0'; // s ¿¡ ´õ¹Ì ·¹ÄÚµå¸¦ ³Ö¾î Á¦°Å.
+		Hashtable[s].name[0] = '\0'; // s ì— ë”ë¯¸ ë ˆì½”ë“œë¥¼ ë„£ì–´ ì œê±°.
 		return 0; // no relocations of records occurred.
 	}
-	else { // s ¸¦ home address ·Î ÇÏ´Â ¿ø¼Ò°¡ s ÀÌÈÄÀÇ Ã¼ÀÎ¿¡ Á¸ÀçÇÑ´Ù.
-		// D(s): À§Ä¡ s ¸¦ Æ÷ÇÔÇÏ¿© ÀÌÇÏ Ã¼ÀÎÀÇ ¸ğµç ÁÖ¼ÒµéÀÇ ÁıÇÕ.
-		//       ÀÌ°ÍÀº »ç½ÇÀº À§Ä¡ s ºÎÅÍ ÀÌÇÏÀÇ Ã¼ÀÎÀÇ ¿ø¼ÒÀÇ link ÇÊµåÀÇ ³»¿ëµéÀÌ´Ù(-1Àº Á¦¿Ü).
-		//       s ÀÇ ÈÄÇàÀÚºÎÅÍ ½ÃÀÛÇÏ¿© HA °¡ D(s) ¿¡ ¼ÓÇÏÁö ¾Ê´Â ¸¶Áö¸· ·¹ÄÚµå¸¦ Ã£ÀÚ.
+	else { // s ë¥¼ home address ë¡œ í•˜ëŠ” ì›ì†Œê°€ s ì´í›„ì˜ ì²´ì¸ì— ì¡´ì¬í•œë‹¤.
+		// D(s): ìœ„ì¹˜ s ë¥¼ í¬í•¨í•˜ì—¬ ì´í•˜ ì²´ì¸ì˜ ëª¨ë“  ì£¼ì†Œë“¤ì˜ ì§‘í•©.
+		//       ì´ê²ƒì€ ì‚¬ì‹¤ì€ ìœ„ì¹˜ s ë¶€í„° ì´í•˜ì˜ ì²´ì¸ì˜ ì›ì†Œì˜ link í•„ë“œì˜ ë‚´ìš©ë“¤ì´ë‹¤(-1ì€ ì œì™¸).
+		//       s ì˜ í›„í–‰ìë¶€í„° ì‹œì‘í•˜ì—¬ HA ê°€ D(s) ì— ì†í•˜ì§€ ì•ŠëŠ” ë§ˆì§€ë§‰ ë ˆì½”ë“œë¥¼ ì°¾ì.
 		found = -1; // found will have the address that meets the condition.
 		curr = Hashtable[s].link; // curr scans elements of chain after location s.
 		prev = s; // this is predecessor of curr.
 		while (curr != -1) {
 			HA_curr = hash(Hashtable[curr].name); // home address of curr.
-			HA_curr_belongs_to_D_s = 0; // ÃÊ±âÈ­. 0 Àº curr ÀÇ È¨ ÁÖ¼Ò°¡ D(s)¿¡ ¼ÓÇÏÁö ¾ÊÀ½À» ¸»ÇÔ.
-			element_of_D_s = s; // element_of_D_s ·Î D(s) ÀÇ ¿ø¼Ò¸¦ ½ºÄµÇÒ °ÍÀÓ.
+			HA_curr_belongs_to_D_s = 0; // ì´ˆê¸°í™”. 0 ì€ curr ì˜ í™ˆ ì£¼ì†Œê°€ D(s)ì— ì†í•˜ì§€ ì•ŠìŒì„ ë§í•¨.
+			element_of_D_s = s; // element_of_D_s ë¡œ D(s) ì˜ ì›ì†Œë¥¼ ìŠ¤ìº”í•  ê²ƒì„.
 			do { // scan D(s)
 				if (element_of_D_s == HA_curr) {
 					HA_curr_belongs_to_D_s = 1;
@@ -218,9 +218,9 @@ int del_middle(int s, int p, int* chain_split)
 				}
 				else
 					element_of_D_s = Hashtable[element_of_D_s].link;
-			} while (element_of_D_s != -1);  // -1 À» curr·Î º¯°æÇØµµ ÁÁÀ¸¸ç ½Ã°£ÀÌ ´ú °É¸°´Ù.
+			} while (element_of_D_s != -1);  // -1 ì„ currë¡œ ë³€ê²½í•´ë„ ì¢‹ìœ¼ë©° ì‹œê°„ì´ ëœ ê±¸ë¦°ë‹¤.
 
-			if (HA_curr_belongs_to_D_s == 0) {  // D(s) ¿¡ ¼ÓÇÏÁö ¾Ê´Â HA ¸¦ °¡Áø ¿ø¼Ò ¹ß°ß!
+			if (HA_curr_belongs_to_D_s == 0) {  // D(s) ì— ì†í•˜ì§€ ì•ŠëŠ” HA ë¥¼ ê°€ì§„ ì›ì†Œ ë°œê²¬!
 				found = curr;
 				prev_found = prev;
 			}
@@ -228,18 +228,18 @@ int del_middle(int s, int p, int* chain_split)
 			prev = curr;
 			curr = Hashtable[curr].link;
 		}
-		// found ¿¡ Ã£Àº °á°ú°¡ ÀÖ´Ù.
-		if (found != -1) { // D(s)¿¡ HA°¡ ¼ÓÇÏÁö ¾Ê´Â ¿ø¼Ò°¡ Á¸ÀçÇÔ.
+		// found ì— ì°¾ì€ ê²°ê³¼ê°€ ìˆë‹¤.
+		if (found != -1) { // D(s)ì— HAê°€ ì†í•˜ì§€ ì•ŠëŠ” ì›ì†Œê°€ ì¡´ì¬í•¨.
 			strcpy(Hashtable[s].name, Hashtable[found].name);
 			Hashtable[s].monincome = Hashtable[found].monincome;
 			nmove = 1 + del_middle(found, prev_found, chain_split);
 			return nmove;
 		}
-		else { // s ´ÙÀ½ ºÎÅÍÀÇ ¸ğµç ¿ø¼Ò´Â home address °¡ D(s)¿¡ ¼ÓÇÔ.
-			// s ÀÇ ¼±ÇàÀÚ¿¡¼­ Ã¼ÀÎÀ» ºĞ¸®ÇØµµ µÈ´Ù.
-			Hashtable[p].link = -1; // Ã¼ÀÎ ºĞ¸®.
-			*chain_split += 1; // Ã¼ÀÎ ºĞ¸® È½¼ö Áõ°¡.
-			nmove = del_start(s, chain_split);  // s¿¡ ÀÖ´Â ·¹ÄÚµå »èÁ¦. s ´Â Ã¼ÀÎÀÇ ½ÃÀÛ.
+		else { // s ë‹¤ìŒ ë¶€í„°ì˜ ëª¨ë“  ì›ì†ŒëŠ” home address ê°€ D(s)ì— ì†í•¨.
+			// s ì˜ ì„ í–‰ìì—ì„œ ì²´ì¸ì„ ë¶„ë¦¬í•´ë„ ëœë‹¤.
+			Hashtable[p].link = -1; // ì²´ì¸ ë¶„ë¦¬.
+			*chain_split += 1; // ì²´ì¸ ë¶„ë¦¬ íšŸìˆ˜ ì¦ê°€.
+			nmove = del_start(s, chain_split);  // sì— ìˆëŠ” ë ˆì½”ë“œ ì‚­ì œ. s ëŠ” ì²´ì¸ì˜ ì‹œì‘.
 			return nmove;
 		}
 	}
@@ -301,7 +301,7 @@ void delete_multiple(int num_del_req) {
 			break;
 		cnt_lines += 1;
 		leng = strlen(line);
-		line[leng - 1] = '\0';  // ¸¶Áö¸· newline ±ÛÀÚ¸¦ Áö¿î´Ù.
+		line[leng - 1] = '\0';  // ë§ˆì§€ë§‰ newline ê¸€ìë¥¼ ì§€ìš´ë‹¤.
 		nmove = delete_rec(line, &num_split);
 		if (nmove >= 0)
 			num_deletion_success += 1;
@@ -349,12 +349,12 @@ int main(void)
 	char line[300], name[1300], * res;
 	char* file_name = "Companies_Korean.txt";
 
-	// Å×ÀÌºí ÃÊ±âÈ­. ¸ğµç À§Ä¡¸¦ ºóÀÚ¸®·Î ÇÔ.
+	// í…Œì´ë¸” ì´ˆê¸°í™”. ëª¨ë“  ìœ„ì¹˜ë¥¼ ë¹ˆìë¦¬ë¡œ í•¨.
 	for (i = 0; i < Tbl_size; i++) {
 		Hashtable[i].name[0] = '\0';
 	}
 
-	// ÆÄÀÏ¿¡¼­ ¸ğµç ÀÌ¸§À» ÀĞ¾î¼­ ÇØ½ÃÅ×ÀÌºí¿¡ ³Ö´Â´Ù.
+	// íŒŒì¼ì—ì„œ ëª¨ë“  ì´ë¦„ì„ ì½ì–´ì„œ í•´ì‹œí…Œì´ë¸”ì— ë„£ëŠ”ë‹¤.
 	fp = fopen(file_name, "r");
 	while (1)
 	{
@@ -363,21 +363,21 @@ int main(void)
 			break;
 		cnt_lines += 1;
 		leng = strlen(line);
-		line[leng - 1] = '\0';  // ¸¶Áö¸· newline ±ÛÀÚ¸¦ Áö¿î´Ù.
-		m_income = rand() % 50000; // ´ÜÀ§´Â Ãµ¿ø
+		line[leng - 1] = '\0';  // ë§ˆì§€ë§‰ newline ê¸€ìë¥¼ ì§€ìš´ë‹¤.
+		m_income = rand() % 50000; // ë‹¨ìœ„ëŠ” ì²œì›
 		strcpy(a_rec.name, line);
 		a_rec.monincome = m_income;
 		a_rec.link = -1;
 		n_probe = insert_rec(a_rec);
 		if (n_probe != -1)
-			cnt_insertion += 1; // »ğÀÔ¼º°ø È½¼ö Áõ°¡
+			cnt_insertion += 1; // ì‚½ì…ì„±ê³µ íšŸìˆ˜ ì¦ê°€
 	}
 	fclose(fp);
 	printf("num of line=%d,  num of inserted records=%d\n\n", cnt_lines, cnt_insertion);
 
-	// ¸í·É¹® ·çÇÁ
+	// ëª…ë ¹ë¬¸ ë£¨í”„
 	while (1) {
-		printf("¸í·É(i,r,v,d,q,c,e)> ");
+		printf("ëª…ë ¹(i,r,v,d,q,c,e)> ");
 		res = gets(line);
 		if (!res)
 		{
@@ -399,7 +399,7 @@ int main(void)
 
 		// read a name.
 		k = 2; i = 0;
-		while (line[k] != '\0' && line[k] == ' ') k++; // °ø¹é¹®ÀÚ´Â °Ç³Ê°£´Ù.
+		while (line[k] != '\0' && line[k] == ' ') k++; // ê³µë°±ë¬¸ìëŠ” ê±´ë„ˆê°„ë‹¤.
 		while (line[k] != '\0') { // read one key which is a company name(including a blank).
 			name[i] = line[k];
 			k++;  i++;
@@ -407,7 +407,7 @@ int main(void)
 		name[i] = '\0';
 
 		switch (line[0]) {
-		case 'i': // insert command:  i ÇĞÁø»óÈ¸
+		case 'i': // insert command:  i í•™ì§„ìƒíšŒ
 			strcpy(a_rec.name, name); a_rec.monincome = rand() % 50000; a_rec.link = -1;
 			n_probe = insert_rec(a_rec);
 			if (n_probe == -1)
@@ -415,7 +415,7 @@ int main(void)
 			else
 				printf("insertion succeeded. num probe = %d\n", n_probe);
 			break;
-		case 'r': // search command: r ÇĞÁø»óÈ¸
+		case 'r': // search command: r í•™ì§„ìƒíšŒ
 			n_probe = 0;
 			pos = retrieve_rec(name, &n_probe);
 			if (pos == -1)
@@ -423,7 +423,7 @@ int main(void)
 			else
 				printf("Search succeeded. loc_found=%d, n_probes=%d\n", pos, n_probe);
 			break;
-		case 'd':  // deletion command:  d ÇĞÁø»óÈ¸
+		case 'd':  // deletion command:  d í•™ì§„ìƒíšŒ
 			n_chain_split = 0;
 			n_move = delete_rec(name, &n_chain_split);
 			if (n_move >= 0)
