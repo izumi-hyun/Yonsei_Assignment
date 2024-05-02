@@ -83,15 +83,15 @@ int path(int sy, int sx, int dy, int dx)
 
 	if (maze[sy][sx] == 1 || maze[dy][dx] == 1)
 	{
-		printf(" Է¿    :       ̳    ǥ             Դϴ .\n");
+		printf("입력오류 : 출발점이나 목표점이 막힌 셀입니다.\n");
 		return 0;
 	}
 	if (sy == dy && sx == dx)
 	{
-		printf(" Է¿    :           ǥ          ϴ .\n");
+		printf("입력오류 : 출발점과 목표점이 같습니다.\n");
 		return 0;
 	}
-	//       ̷θ  ȭ 鿡  ׸   .
+	// 먼지 미로를 화면에 그린다.
 	CONSOLE_SCREEN_BUFFER_INFO presentCur;
 	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &presentCur);
 	basex = presentCur.dwCursorPosition.X;
@@ -198,9 +198,9 @@ int path(int sy, int sx, int dy, int dx)
 	if (found)
 	{
 		//gotoxy(basex, basey + m + 2);
-		printf("\nã      (row,col):\n");
+		printf("\n찾은 경로(row,col):\n");
 		path_length = 0;
-		/*               Ѱſ            
+		/* 역 스택을 사용한거였으나 제외함
 		while (top)
 		{
 			position = pop(&top);
@@ -235,12 +235,12 @@ int path(int sy, int sx, int dy, int dx)
 		}
 		printf("[%2d,%2d]\n", dy, dx);
 		++path_length;
-		printf("  α    = %d,   Ʈ  ŷ  = %d", path_length, num_bktrack);
+		printf("경로길이 = %d, 백트래킹수= %d", path_length, num_bktrack);
 	}
 	else
 	{
 		//gotoxy(basex, basey + m + 2);
-		printf("  ξ   \n");
+		printf("경로없음\n");
 	}
 
 }
@@ -248,7 +248,7 @@ int path(int sy, int sx, int dy, int dx)
 
 int main()
 {
-	// (fopen, fscanf  ̿ ).
+	// (fopen, fscanf 이용).
 	FILE* fp = NULL;
 	fp = fopen("maze_14_2.txt", "r");
 	if (!fp)
@@ -272,7 +272,7 @@ int main()
 		
 		
 		printf("\n");
-		printf("     ,   ǥ    ?(4         ;       Control+DEnter): ");
+		printf("출발점, 목표점은?(4개의 정수; 종료는 Control+DEnter): ");
 		res = scanf("%d%d%d%d", &starty, &startx, &endy, &endx);
 		if (res != 4) break;
 		path(starty, startx, endy, endx);
