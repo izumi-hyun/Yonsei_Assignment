@@ -157,7 +157,7 @@ int path(int sy, int sx, int dy, int dx)
                 gotoxy(nextCol + basex, nextRow + basey);
                 printf("<");
                 position.row = row; position.col = col;
-                position.dir = ++dir;
+                position.dir = dir;
                 push(&top, position);
                 found = TRUE;
             }
@@ -179,7 +179,7 @@ int path(int sy, int sx, int dy, int dx)
                 gotoxy(nextCol + basex, nextRow + basey);
                 printf("!");
                 position.row = row; position.col = col;
-                position.dir = ++dir;
+                position.dir = dir;
                 push(&top, position);
                 stop = 1;
                 break;
@@ -193,15 +193,17 @@ int path(int sy, int sx, int dy, int dx)
                     printf("$");
                     mark[row][col] = 1;
                     num_bktrack++;
+                    Sleep(500);
                 }
             }
+            Sleep(100);
         }
         if (stop == 1)
         {
             break;
         }
     }
-    gotoxy(col + basex+4, row + basey+4);
+    gotoxy(col + basex + 4, row + basey + 4);
     if (stop == 1)
     {
         printf("\n장애물 발견으로 중단");
